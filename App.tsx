@@ -1,20 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { useFonts } from 'expo-font';
+// Custom Fonts Config
+import { FontLoader } from './src/config/FontConfig';
+import Router from './src/navigation/Router';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App: React.FC = () => {
+  const [loaded] = useFonts(FontLoader);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return <Router />;
+};
+
+export default App;
