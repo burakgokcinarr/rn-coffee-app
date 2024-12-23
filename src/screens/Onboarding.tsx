@@ -5,11 +5,16 @@ import { Image } from 'expo-image';
 import { Colors, Fonts } from '../constants';
 import { CustomButton } from '../components';
 import { ArrowRight } from 'lucide-react-native';
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const BACKGROUND_IMAGE = require('../../assets/background.png');
-const COFFEE_IMAGE     = require('../../assets/coffee.png');
+const COFFEE_IMAGE = require('../../assets/coffee.png');
 
 const Onboarding: React.FC = () => {
+
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
     return (
         <View style={styles.container}>
             <StatusBar style="light" />
@@ -34,9 +39,9 @@ const Onboarding: React.FC = () => {
 
             <CustomButton
                 title="Get Started"
-                onPress={() => alert('Get Started')}
+                onPress={() => navigation.navigate("SignIn")}
                 buttonStyle={{ marginTop: 50 }}
-                icon={<ArrowRight color={Colors.white} size={25} style={{position: 'absolute', right: 10 }}/>}>
+                icon={<ArrowRight color={Colors.white} size={25} style={{ position: 'absolute', right: 10 }} />}>
             </CustomButton>
         </View>
     );

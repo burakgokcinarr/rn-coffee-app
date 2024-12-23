@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Onboarding } from '../screens';
+import { Onboarding, SignIn } from '../screens';
 
 type RootStackParamList = {
     Onboarding: undefined;
+    SignIn: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -19,6 +20,7 @@ const Router: React.FC = () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={stackOption}>
                 <Stack.Screen name="Onboarding" component={Onboarding} />
+                <Stack.Screen name="SignIn" component={SignIn} />
             </Stack.Navigator>
         </NavigationContainer>
     );
