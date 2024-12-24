@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Onboarding, SignIn } from '../screens';
+import { Onboarding, SignIn } from '../screens/auth';
 
 type RootStackParamList = {
     Onboarding: undefined;

@@ -2,14 +2,14 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
-import { Colors, Fonts } from '../constants';
-import { CustomButton } from '../components';
+import { Colors, Fonts } from '../../constants';
+import { CustomButton } from '../../components';
 import { ArrowRight } from 'lucide-react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const BACKGROUND_IMAGE = require('../../assets/background.png');
-const COFFEE_IMAGE = require('../../assets/coffee.png');
+const BACKGROUND_IMAGE = require('../../../assets/background.png');
+const COFFEE_IMAGE = require('../../../assets/coffee.png');
 
 const Onboarding: React.FC = () => {
 
