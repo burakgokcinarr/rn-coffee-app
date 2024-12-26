@@ -12,10 +12,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const BACKGROUND_IMAGE = require('../../../assets/background.png');
 const COFFEE_IMAGE = require('../../../assets/coffee.png');
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
 
     const [phone, setPhone] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [rePassword, setRePassword] = React.useState('');
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     return (
@@ -36,8 +37,8 @@ const SignIn: React.FC = () => {
                 />
                 <Text style={styles.header}>COFFEE TASTE !</Text>
 
-                <Text style={styles.signInText}>Sign In</Text>
-                <Text style={styles.subText}>We’ve already met!</Text>
+                <Text style={styles.signInText}>Sign Up</Text>
+                <Text style={styles.subText}>Let’s create you an account.</Text>
 
                 <View style={styles.inputContainer}>
                     <CustomTextInput
@@ -52,6 +53,12 @@ const SignIn: React.FC = () => {
                         onChangeText={setPassword}
                         iconLeft={<RectangleEllipsis size={20} color={Colors.white} />}
                     />
+                    <CustomTextInput
+                        value={rePassword}
+                        placeholder="Re-Password"
+                        onChangeText={setRePassword}
+                        iconLeft={<RectangleEllipsis size={20} color={Colors.white} />}
+                    />
 
                     <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                         <Text style={styles.forgotPassword}>Forgot Password?</Text>
@@ -59,18 +66,18 @@ const SignIn: React.FC = () => {
                 </View>
 
                 <CustomButton
-                    title='Sign In'
+                    title='Sign Up'
                     onPress={() => navigation.navigate('Home')}
                     buttonStyle={{ alignSelf: 'center' }}
                     icon={<ArrowRight color={Colors.white} size={25} style={{ position: 'absolute', right: 10 }} />}
                 />
 
-                <View style={styles.containerSignUp}>
+                <View style={styles.containerSignIn}>
                     <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.signUpText}>
-                        Don't have an account?
+                        Do you have an account?
                     </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                        <Text style={styles.text}>Sign Up</Text>
+                    <TouchableOpacity onPress={() => navigation.canGoBack() && navigation.goBack()}>
+                        <Text style={styles.text}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -83,7 +90,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.background,
-        //paddingVertical: 20,
     },
     image: {
         ...StyleSheet.absoluteFillObject,
@@ -131,13 +137,14 @@ const styles = StyleSheet.create({
     },
     signUpText: {
         color: Colors.white,
+        textAlign: 'center'
     },
     text: {
         color: Colors.primary,
         textDecorationLine: 'underline',
         marginLeft: 4
     },
-    containerSignUp: {
+    containerSignIn: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -145,4 +152,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignIn;
+export default SignUp;
