@@ -60,7 +60,7 @@ const SignIn: React.FC = () => {
 
                 <CustomButton
                     title='Sign In'
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => navigation.navigate('App')}
                     buttonStyle={{ alignSelf: 'center' }}
                     icon={<ArrowRight color={Colors.white} size={25} style={{ position: 'absolute', right: 10 }} />}
                 />
