@@ -22,7 +22,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({ placeholder, onChange
             <TextInput
                 value={value}
                 placeholder={placeholder}
-                secureTextEntry={placeholder === 'Password' && !isPasswordVisible}
+                secureTextEntry={(placeholder === 'Password' || placeholder === 'Re-Password') && !isPasswordVisible}
                 autoCorrect={false}
                 placeholderTextColor={Colors.white}
                 style={styles.input}
@@ -31,7 +31,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({ placeholder, onChange
                 {...props}
             />
             {
-                placeholder === 'Password' && (
+                (placeholder === 'Password' || placeholder === 'Re-Password') && (
                     <TouchableOpacity onPress={togglePasswordVisibility}>
                         {
                             isPasswordVisible

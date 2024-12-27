@@ -1,3 +1,4 @@
+import ForgotPassword from "./ForgotPassword";
 import Onboarding from "./Onboarding";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -5,5 +6,6 @@ import SignUp from "./SignUp";
 export {
     Onboarding,
     SignIn,
-    SignUp
+    SignUp,
+    ForgotPassword
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants';
 import { Image } from 'expo-image';
@@ -7,16 +7,16 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { CustomTextInput, CustomButton } from '../../components';
-import { Smartphone, RectangleEllipsis, ArrowRight } from 'lucide-react-native';
+import { RectangleEllipsis, ArrowRight } from 'lucide-react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const BACKGROUND_IMAGE = require('../../../assets/background.png');
 const COFFEE_IMAGE = require('../../../assets/coffee.png');
 
-const SignIn: React.FC = () => {
+const ForgotPassword: React.FC = () => {
 
-    const [phone, setPhone] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [password, setPassword]     = React.useState('');
+    const [rePassword, setRePassword] = React.useState('');
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     return (
@@ -37,43 +37,30 @@ const SignIn: React.FC = () => {
                 />
                 <Text style={styles.header}>COFFEE TASTE !</Text>
 
-                <Text style={styles.signInText}>Sign In</Text>
+                <Text style={styles.forgotText}>Forgot Password</Text>
                 <Text style={styles.subText}>We’ve already met!</Text>
 
                 <View style={styles.inputContainer}>
-                    <CustomTextInput
-                        value={phone}
-                        placeholder="Phone Number"
-                        onChangeText={setPhone}
-                        iconLeft={<Smartphone size={20} color={Colors.white} />}
-                    />
                     <CustomTextInput
                         value={password}
                         placeholder="Password"
                         onChangeText={setPassword}
                         iconLeft={<RectangleEllipsis size={20} color={Colors.white} />}
                     />
-
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                        <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                    </TouchableOpacity>
+                    <CustomTextInput
+                        value={rePassword}
+                        placeholder="Re-Password"
+                        onChangeText={setRePassword}
+                        iconLeft={<RectangleEllipsis size={20} color={Colors.white} />}
+                    />
                 </View>
 
                 <CustomButton
-                    title='Sign In'
+                    title='Confirm'
                     onPress={() => navigation.navigate('App')}
-                    buttonStyle={{ alignSelf: 'center' }}
+                    buttonStyle={{ alignSelf: 'center', bottom: 10 }}
                     icon={<ArrowRight color={Colors.white} size={25} style={{ position: 'absolute', right: 10 }} />}
                 />
-
-                <View style={styles.containerSignUp}>
-                    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.signUpText}>
-                        Don't have an account?
-                    </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                        <Text style={styles.text}>Sign Up</Text>
-                    </TouchableOpacity>
-                </View>
 
             </SafeAreaView>
         </KeyboardAwareScrollView>
@@ -83,8 +70,7 @@ const SignIn: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.background,
-        //paddingVertical: 20,
+        backgroundColor: Colors.background
     },
     image: {
         ...StyleSheet.absoluteFillObject,
@@ -102,7 +88,7 @@ const styles = StyleSheet.create({
         color: Colors.white,
         textAlign: 'center'
     },
-    signInText: {
+    forgotText: {
         fontSize: 40,
         fontWeight: 'bold',
         color: 'white',
@@ -122,28 +108,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 100,
-    },
-    forgotPassword: {
-        color: Colors.primary,
-        textDecorationLine: 'underline',
-        textAlign: 'center',
-        fontSize: 16,
-        marginBottom: 20,
-    },
-    signUpText: {
-        color: Colors.white,
-    },
-    text: {
-        color: Colors.primary,
-        textDecorationLine: 'underline',
-        marginLeft: 4
-    },
-    containerSignUp: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 8,
     }
 });
 
-export default SignIn;
+export default ForgotPassword;
