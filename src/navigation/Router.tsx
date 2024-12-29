@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from '../constants';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Onboarding, SignIn, SignUp, ForgotPassword } from '../screens/auth';
+import { PhoneAuthScreen } from '../screens/PhoneAuthScreen';
+import { OTPVerificationScreen } from '../screens/OTPVerificationScreen';
 import TabView from '../screens/main/TabView';
 
 type RootStackParamList = {
@@ -11,6 +13,8 @@ type RootStackParamList = {
     SignUp: undefined;
     App: undefined;
     ForgotPassword: undefined;
+    PhoneAuth: undefined;
+    OTPVerification: { phone: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -35,6 +39,8 @@ const Router: React.FC = () => {
                 <Stack.Screen name="Onboarding" component={Onboarding} />
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
+                <Stack.Screen name="PhoneAuth" component={PhoneAuthScreen} />
+                <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} options={stackOptionWithHeader} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={stackOptionWithHeader} />
                 <Stack.Screen name="App" component={TabView} />
             </Stack.Navigator>
