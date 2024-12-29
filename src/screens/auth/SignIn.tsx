@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../constants';
@@ -16,11 +16,13 @@ const COFFEE_IMAGE = require('../../../assets/coffee.png');
 
 const SignIn: React.FC = () => {
 
-    const [phone, setPhone] = React.useState('');
+    const [phone, setPhone]     = useState('');
+    const [loading, setLoading] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     const handleSignIn = async () => {
         try {
+            setLoading(true);
             const formattedPhone = phone.startsWith('+') ? phone : `+${phone}`;
             const { error } = await supabase.auth.signInWithOtp({
                 phone: formattedPhone,
@@ -28,9 +30,22 @@ const SignIn: React.FC = () => {
 
             if (error) throw error;
 
+            Alert.alert(
+                'OTP Sent',
+                'Please check your phone for the verification code.',
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => navigation.navigate('OTPVerification', { phone: formattedPhone }),
+                  },
+                ]
+            );
+
             navigation.navigate('OTPVerification', { phone: formattedPhone });
         } catch (error: any) {
             Alert.alert('Error', error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
