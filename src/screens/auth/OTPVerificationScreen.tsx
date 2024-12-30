@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Colors } from '../../constants';
-
+import { CustomTextInput, CustomButton } from '../../components';
 
 const BACKGROUND_IMAGE = require('../../../assets/background.png');
 const COFFEE_IMAGE = require('../../../assets/coffee.png');
@@ -27,18 +19,20 @@ const OTPVerificationScreen: React.FC = ({ route, navigation }: any) => {
   const handleVerifyOTP = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.verifyOtp({
+      const { error, data } = await supabase.auth.verifyOtp({
         phone,
         token: otp,
         type: 'sms',
       });
+
+      //console.log(data);
 
       if (error) throw error;
 
       Alert.alert('Success', 'Phone number verified successfully!', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('Home'), // Navigate to your home screen
+          onPress: () => navigation.navigate('App')
         },
       ]);
     } catch (error: any) {
@@ -66,9 +60,9 @@ const OTPVerificationScreen: React.FC = ({ route, navigation }: any) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" extraScrollHeight={25}>
+    <KeyboardAwareScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" extraScrollHeight={20}>
       <StatusBar style="light" />
-      <View style={styles.content}>
+      <SafeAreaView style={styles.container}>
         <Image
             style={styles.image}
             source={BACKGROUND_IMAGE}
@@ -82,34 +76,29 @@ const OTPVerificationScreen: React.FC = ({ route, navigation }: any) => {
             transition={250}
         />
         <Text style={styles.header}>COFFEE TASTE !</Text>
-
-        <Text style={styles.subText}>Verify Your Phone</Text>
+        <Text style={styles.subText}>We've already met!</Text>
         <Text style={styles.subtitle}>
           Enter the verification code sent to {phone}
         </Text>
 
         <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter verification code"
+          <CustomTextInput
             value={otp}
+            placeholder="Enter verification code"
             onChangeText={setOtp}
-            keyboardType="number-pad"
+            keyboardType="phone-pad"
+            style={styles.input}
             maxLength={6}
           />
         </View>
 
-        <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
-          onPress={handleVerifyOTP}
-          disabled={loading || otp.length < 6}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Verify Code</Text>
-          )}
-        </TouchableOpacity>
+        <CustomButton
+            title='Verify Code'
+            onPress={handleVerifyOTP}
+            buttonStyle={{ alignSelf: 'center', marginBottom: 15 }} 
+            disabled={loading || otp.length < 6}
+            loading={loading}
+        />
 
         <TouchableOpacity
           style={styles.resendButton}
@@ -118,14 +107,14 @@ const OTPVerificationScreen: React.FC = ({ route, navigation }: any) => {
         >
           <Text style={styles.resendButtonText}>Resend Code</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: Colors.background,
   },
   image: {
@@ -144,10 +133,12 @@ const styles = StyleSheet.create({
     color: Colors.white,
     textAlign: 'center'
   },
-  content: {
+  inputContainer: {
+    gap: 10,
     flex: 1,
-    padding: 20,
+    alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 100,
   },
   subText: {
       fontSize: 20,
@@ -163,35 +154,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 25,
     color: Colors.white,
     textAlign: 'center',
     marginBottom: 15,
   },
-  inputContainer: {
-    marginBottom: 20,
-  },
   input: {
-    borderWidth: 0.3,
-    borderColor: Colors.white,
-    borderRadius: 8,
-    padding: 10,
     color: Colors.white,
     fontSize: 25,
     textAlign: 'center'
   },
-  button: {
-    backgroundColor: '#2563eb',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  buttonDisabled: {
-    backgroundColor: '#93c5fd',
-  },
   buttonText: {
-    color: '#fff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -199,8 +173,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   resendButtonText: {
-    color: '#2563eb',
-    fontSize: 16,
+    color: Colors.warning,
+    fontSize: 18,
   },
 }); 
 
