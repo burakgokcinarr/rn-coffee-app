@@ -34,10 +34,10 @@ const SignIn: React.FC = () => {
                 'OTP Sent',
                 'Please check your phone for the verification code.',
                 [
-                  {
-                    text: 'OK',
-                    onPress: () => navigation.navigate('OTPVerification', { phone: formattedPhone }),
-                  },
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('OTPVerification', { phone: formattedPhone }),
+                    }
                 ]
             );
 

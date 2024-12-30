@@ -7,6 +7,8 @@ import { StatusBar } from 'expo-status-bar';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Colors } from '../../constants';
 import { CustomTextInput, CustomButton } from '../../components';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from '../../redux/slices/auth';
 
 const BACKGROUND_IMAGE = require('../../../assets/background.png');
 const COFFEE_IMAGE = require('../../../assets/coffee.png');
@@ -15,6 +17,7 @@ const OTPVerificationScreen: React.FC = ({ route, navigation }: any) => {
   const { phone } = route.params;
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleVerifyOTP = async () => {
     try {
@@ -22,10 +25,11 @@ const OTPVerificationScreen: React.FC = ({ route, navigation }: any) => {
       const { error, data } = await supabase.auth.verifyOtp({
         phone,
         token: otp,
-        type: 'sms',
+        type: 'sms'
       });
 
       //console.log(data);
+      dispatch(setUserInfo(data?.user))
 
       if (error) throw error;
 

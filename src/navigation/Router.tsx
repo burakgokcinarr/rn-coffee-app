@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from '../constants';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Onboarding, SignIn, SignUp, ForgotPassword, OTPVerificationScreen } from '../screens/auth';
 import TabView from '../screens/main/TabView';
+import { supabase } from '../lib/supabase';
 
 type RootStackParamList = {
     Onboarding: undefined;
@@ -31,9 +32,25 @@ const stackOptionWithHeader: NativeStackNavigationOptions = {
 };
 
 const Router: React.FC = () => {
+
+    const [initialRoute, setInitialRoute] = useState<keyof RootStackParamList | null>(null);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setInitialRoute(user ? "App" : "Onboarding");
+        };
+
+        checkUser();
+    }, []);
+
+    if (initialRoute === null) {
+        return null; // Or a loading spinner
+    }
+
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={stackOption}>
+            <Stack.Navigator screenOptions={stackOption} initialRouteName={initialRoute}>
                 <Stack.Screen name="Onboarding" component={Onboarding} />
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
