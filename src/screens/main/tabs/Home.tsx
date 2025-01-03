@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { Colors, Fonts } from '../../../constants';
 import { Search, Settings2 } from 'lucide-react-native';
@@ -24,10 +24,116 @@ interface Product {
     image: string;
 }
 
+// Dummy data
+const frozenBeverages = [
+    {
+        id: 1,
+        name: 'Coffee',
+        price: 22.00,
+        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
+    },
+    {
+        id: 2,
+        name: 'Coffee',
+        price: 85.00,
+        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
+    }
+];
+
+// FrozenBeverages component'i için ayrı stiller
+const frozenBeveragesStyles = StyleSheet.create({
+    container: {
+        marginVertical: 8,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+        marginBottom: 12,
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: Colors.white,
+    },
+    seeAll: {
+        fontSize: 14,
+        color: Colors.warning,
+    },
+    scrollContainer: {
+        paddingHorizontal: 12,
+    },
+    itemContainer: {
+        width: 160,
+        marginHorizontal: 4,
+        padding: 12,
+        backgroundColor: Colors.primary,
+        borderRadius: 12,
+    },
+    imageContainer: {
+        width: '100%',
+        height: 120,
+        marginBottom: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    image: {
+        width: '100%',
+        aspectRatio: 1
+    },
+    itemName: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: Colors.white,
+        marginBottom: 4,
+    },
+    itemPrice: {
+        fontSize: 14,
+        color: Colors.warning,
+    },
+});
+
+const FrozenBeverages = () => {
+    return (
+        <View style={frozenBeveragesStyles.container}>
+            <View style={frozenBeveragesStyles.header}>
+                <Text style={frozenBeveragesStyles.title}>Frozen Beverages</Text>
+                <TouchableOpacity>
+                    <Text style={frozenBeveragesStyles.seeAll}>See All</Text>
+                </TouchableOpacity>
+            </View>
+
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={frozenBeveragesStyles.scrollContainer}
+            >
+                {frozenBeverages.map((item) => (
+                    <TouchableOpacity
+                        key={item.id}
+                        style={frozenBeveragesStyles.itemContainer}
+                    >
+                        <View style={frozenBeveragesStyles.imageContainer}>
+                            <Image
+                                source={{ uri: item.image }}
+                                style={frozenBeveragesStyles.image}
+                                contentFit="contain"
+                            />
+                            <Text style={frozenBeveragesStyles.itemName}>{item.name}</Text>
+                            <Text style={frozenBeveragesStyles.itemPrice}>${item.price.toFixed(2)}</Text>
+                        </View>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </View>
+    );
+};
+
 const Home: React.FC = () => {
 
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-    
+
     const renderCategory = useCallback(({ item }: { item: Category }) => (
         <TouchableOpacity
             style={[
@@ -118,6 +224,8 @@ const Home: React.FC = () => {
                     keyExtractor={item => item.id}
                 />
             </View>
+
+            <FrozenBeverages />
         </View>
     );
 };
