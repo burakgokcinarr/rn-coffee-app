@@ -1,83 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
-import { Colors } from '../../../constants';
+import { Colors, Fonts } from '../../../constants';
 import { Search, Settings2 } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
+import { categories, products } from '../../../data/Mock';
 
 const { width } = Dimensions.get('window');
-
-// Category data
-const categories = [
-    { id: '1', title: 'Coffee', icon: '☕' },
-    { id: '2', title: 'Beer', icon: '🍺' },
-    { id: '3', title: 'Wine Bar', icon: '🍷' },
-    { id: '4', title: 'Event', icon: '🎉' },
-];
-
-// Products data
-const products = [
-    {
-        id: '1',
-        title: 'Chai Latte',
-        price: '85.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/chai-latte.jpg'
-    },
-    {
-        id: '2',
-        title: 'Matcha Latte',
-        price: '22.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/matcha-latte.jpg'
-    },
-    {
-        id: '3',
-        title: 'Red Eye Coffee',
-        price: '60.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/red-eye-coffee.jpg'
-    },
-    {
-        id: '4',
-        title: 'Cappuccino',
-        price: '45.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/cappuccino.jpg'
-    },
-    {
-        id: '5',
-        title: 'Espresso',
-        price: '35.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/espresso.jpg'
-    },
-    {
-        id: '6',
-        title: 'Caramel Macchiato',
-        price: '75.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/caramel-macchiato.jpg'
-    },
-    {
-        id: '7',
-        title: 'Mocha',
-        price: '65.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/mocha.jpg'
-    },
-    {
-        id: '8',
-        title: 'Americano',
-        price: '40.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/americano.jpg'
-    },
-    {
-        id: '9',
-        title: 'Turkish Coffee',
-        price: '30.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/turkish-coffee.jpg'
-    },
-    {
-        id: '10',
-        title: 'Irish Coffee',
-        price: '90.00',
-        image: 'https://mdmmjxmbjgxesudguogx.supabase.co/storage/v1/object/public/coffee-images/irish-coffee.jpg'
-    }
-];
 
 const BACKGROUND_IMAGE = require('../../../../assets/background.png');
 const PROFILE_IMAGE = require('../../../../assets/coffee.png');
@@ -97,17 +26,20 @@ interface Product {
 
 const Home: React.FC = () => {
 
+    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    
     const renderCategory = useCallback(({ item }: { item: Category }) => (
         <TouchableOpacity
             style={[
                 styles.categoryItem,
-                item.id === '1' && styles.activeCategoryItem
+                item.id === selectedCategory?.id && styles.activeCategoryItem
             ]}
+            onPress={() => setSelectedCategory(item)}
         >
             <Text style={styles.categoryIcon}>{item.icon}</Text>
             <Text style={styles.categoryText}>{item.title}</Text>
         </TouchableOpacity>
-    ), []);
+    ), [selectedCategory]);
 
     const renderProduct = useCallback(({ item }: { item: Product }) => (
         <TouchableOpacity style={styles.productCard}>
@@ -137,7 +69,7 @@ const Home: React.FC = () => {
                 <View style={styles.profileSection}>
                     <Image
                         source={PROFILE_IMAGE}
-                        style={styles.profileImage}
+                        style={styles.coffeeImage}
                         contentFit="cover"
                     />
                     <View>
@@ -146,6 +78,17 @@ const Home: React.FC = () => {
                 </View>
             </View>
 
+            {/* Profile Bar */}
+            <View style={styles.profileView}>
+                <Image
+                    source={{ uri: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?ga=GA1.1.1087755220.1735906204&semt=ais_hybrid' }}
+                    style={styles.profileImage}
+                    contentFit="cover" />
+                <Settings2 color={Colors.white} size={30} />
+            </View>
+
+            <Text style={styles.name}>Hi, Burak Gökçınar</Text>
+
             {/* Search Bar */}
             <View style={styles.searchContainer}>
                 <Search color={Colors.white} size={20} />
@@ -153,24 +96,28 @@ const Home: React.FC = () => {
             </View>
 
             {/* Categories */}
-            <FlatList
-                data={categories}
-                renderItem={renderCategory}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.categoryList}
-                keyExtractor={item => item.id}
-            />
+            <View>
+                <FlatList
+                    data={categories}
+                    renderItem={renderCategory}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.categoryList}
+                    keyExtractor={item => item.id}
+                />
+            </View>
 
             {/* Products */}
-            <FlatList
-                data={products}
-                renderItem={renderProduct}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.productList}
-                keyExtractor={item => item.id}
-            />
+            <View>
+                <FlatList
+                    data={products}
+                    renderItem={renderProduct}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.productList}
+                    keyExtractor={item => item.id}
+                />
+            </View>
         </View>
     );
 };
@@ -196,9 +143,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 12,
     },
-    profileImage: {
+    coffeeImage: {
         width: 50,
         height: 50
+    },
+    profileView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    profileImage: {
+        width: 35,
+        height: 35,
+        borderRadius: 20,
     },
     greeting: {
         color: Colors.white,
@@ -206,14 +163,15 @@ const styles = StyleSheet.create({
     },
     name: {
         color: Colors.white,
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold',
+        marginTop: 20,
     },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 12,
+        backgroundColor: 'rgba(255, 255, 255, 0.29)',
+        padding: 16,
         borderRadius: 12,
         marginTop: 20,
         gap: 8,
@@ -223,7 +181,7 @@ const styles = StyleSheet.create({
         opacity: 0.7,
     },
     categoryList: {
-        marginTop: 20,
+        marginTop: 20
     },
     categoryItem: {
         width: 120,
@@ -233,10 +191,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.1)',
         padding: 12,
         borderRadius: 20,
-        marginRight: 10
+        marginRight: 10,
+        marginBottom: 10
     },
     activeCategoryItem: {
-        backgroundColor: Colors.primary,
+        backgroundColor: '#A97C37',
     },
     categoryIcon: {
         fontSize: 16,
@@ -274,7 +233,8 @@ const styles = StyleSheet.create({
     productPrice: {
         color: Colors.primary,
         fontSize: 16,
-        marginTop: 4,
+        fontWeight: 'bold',
+        marginTop: 5,
     },
 });
 
