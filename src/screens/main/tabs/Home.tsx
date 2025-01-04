@@ -5,6 +5,7 @@ import { Colors, Fonts } from '../../../constants';
 import { Search, Settings2 } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
 import { categories, products } from '../../../data/Mock';
+import { FrozenBeverages } from '../../../components';
 
 const { width } = Dimensions.get('window');
 
@@ -23,112 +24,6 @@ interface Product {
     price: string;
     image: string;
 }
-
-// Dummy data
-const frozenBeverages = [
-    {
-        id: 1,
-        name: 'Coffee',
-        price: 22.00,
-        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
-    },
-    {
-        id: 2,
-        name: 'Coffee',
-        price: 85.00,
-        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
-    }
-];
-
-// FrozenBeverages component'i için ayrı stiller
-const frozenBeveragesStyles = StyleSheet.create({
-    container: {
-        marginVertical: 8,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 8,
-        marginBottom: 12,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: Colors.white,
-    },
-    seeAll: {
-        fontSize: 14,
-        color: Colors.warning,
-    },
-    scrollContainer: {
-        paddingHorizontal: 12,
-    },
-    itemContainer: {
-        width: 160,
-        marginHorizontal: 4,
-        padding: 12,
-        backgroundColor: Colors.primary,
-        borderRadius: 12,
-    },
-    imageContainer: {
-        width: '100%',
-        height: 120,
-        marginBottom: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    image: {
-        width: '100%',
-        aspectRatio: 1
-    },
-    itemName: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: Colors.white,
-        marginBottom: 4,
-    },
-    itemPrice: {
-        fontSize: 14,
-        color: Colors.warning,
-    },
-});
-
-const FrozenBeverages = () => {
-    return (
-        <View style={frozenBeveragesStyles.container}>
-            <View style={frozenBeveragesStyles.header}>
-                <Text style={frozenBeveragesStyles.title}>Frozen Beverages</Text>
-                <TouchableOpacity>
-                    <Text style={frozenBeveragesStyles.seeAll}>See All</Text>
-                </TouchableOpacity>
-            </View>
-
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={frozenBeveragesStyles.scrollContainer}
-            >
-                {frozenBeverages.map((item) => (
-                    <TouchableOpacity
-                        key={item.id}
-                        style={frozenBeveragesStyles.itemContainer}
-                    >
-                        <View style={frozenBeveragesStyles.imageContainer}>
-                            <Image
-                                source={{ uri: item.image }}
-                                style={frozenBeveragesStyles.image}
-                                contentFit="contain"
-                            />
-                            <Text style={frozenBeveragesStyles.itemName}>{item.name}</Text>
-                            <Text style={frozenBeveragesStyles.itemPrice}>${item.price.toFixed(2)}</Text>
-                        </View>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
-        </View>
-    );
-};
 
 const Home: React.FC = () => {
 
@@ -201,31 +96,34 @@ const Home: React.FC = () => {
                 <Text style={styles.searchPlaceholder}>Coffee shop, beer & wine...</Text>
             </View>
 
-            {/* Categories */}
-            <View>
-                <FlatList
-                    data={categories}
-                    renderItem={renderCategory}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.categoryList}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+            <ScrollView>
+                {/* Categories */}
+                <View>
+                    <FlatList
+                        data={categories}
+                        renderItem={renderCategory}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={styles.categoryList}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
 
-            {/* Products */}
-            <View>
-                <FlatList
-                    data={products}
-                    renderItem={renderProduct}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.productList}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+                {/* Products */}
+                <View>
+                    <FlatList
+                        data={products}
+                        renderItem={renderProduct}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={styles.productList}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
 
-            <FrozenBeverages />
+                {/* Frozen Beverages */}
+                <FrozenBeverages />
+            </ScrollView>
         </View>
     );
 };

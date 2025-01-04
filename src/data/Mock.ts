@@ -67,3 +67,30 @@ export const products = [
         image: 'https://www.thespruceeats.com/thmb/BaTQiJBdsmkbQvBZO6HaoeBoNgE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/original-irish-coffee-recipe-759311-Hero-5b759d4b46e0fb005089915e.jpg'
     }
 ];
+
+export const frozenBeverages = [
+    {
+        id: 1,
+        name: 'Coffee',
+        price: 22.00,
+        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
+    },
+    {
+        id: 2,
+        name: 'Coffee',
+        price: 85.00,
+        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
+    },
+    {
+        id: 3,
+        name: 'Coffee',
+        price: 65.00,
+        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
+    },
+    {
+        id: 4,
+        name: 'Coffee',
+        price: 65.00,
+        image: 'https://atakafe.atakum.bel.tr/img/1179244943.jpg'
+    }
+];
